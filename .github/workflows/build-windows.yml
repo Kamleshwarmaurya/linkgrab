@@ -5,6 +5,15 @@ on:
     tags:
       - 'v*'
   workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to create and attach the installers to (for example v1.1.0)'
+        required: true
+        default: 'v1.1.0'
+      publish:
+        description: 'Publish a GitHub release (leave on to make the .exe downloadable)'
+        type: boolean
+        default: true
 
 permissions:
   contents: write
@@ -56,7 +65,7 @@ jobs:
           Get-Content dist\SHA256SUMS.txt
 
       - name: Write release notes
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.publish)
         shell: pwsh
         run: |
           $notes = @'
@@ -90,11 +99,13 @@ jobs:
           if-no-files-found: error
 
       - name: Attach to GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/') || (github.event_name == 'workflow_dispatch' && inputs.publish)
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/*.exe
             dist/SHA256SUMS.txt
           body_path: release-notes.md
-          name: LinkGrab ${{ github.ref_name }}
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          name: LinkGrab ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          target_commitish: ${{ github.sha }}
