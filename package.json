@@ -1,7 +1,7 @@
 {
   "name": "linkgrab",
   "version": "1.1.0",
-  "description": "Desktop download manager for YouTube, Facebook, LinkedIn, X and Instagram videos and images, powered by yt-dlp, ffmpeg and gallery-dl",
+  "description": "Free IDM-style download manager for Windows: YouTube, Facebook, LinkedIn, X (Twitter) and Instagram videos and images, powered by yt-dlp, ffmpeg and gallery-dl",
   "main": "src/main/main.js",
   "author": "Kamleshwar",
   "license": "MIT",
@@ -75,15 +75,21 @@
     "url": "https://github.com/Kamleshwarmaurya/linkgrab/issues"
   },
   "keywords": [
+    "idm-alternative",
+    "internet-download-manager",
     "download-manager",
+    "video-downloader",
+    "youtube-downloader",
+    "instagram-downloader",
+    "instagram-reels-downloader",
+    "twitter-video-downloader",
+    "x-video-downloader",
+    "facebook-video-downloader",
+    "linkedin-video-downloader",
     "yt-dlp",
     "gallery-dl",
     "electron",
-    "youtube",
-    "instagram",
-    "twitter",
-    "x",
-    "facebook",
-    "linkedin"
+    "windows",
+    "open-source"
   ]
 }

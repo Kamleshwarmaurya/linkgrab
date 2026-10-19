@@ -1,5 +1,7 @@
 # LinkGrab
 
+**Free, open-source IDM alternative for downloading videos and images from YouTube, Facebook, LinkedIn, X (Twitter) and Instagram.** Windows installer and portable app; macOS and Linux from source (experimental).
+
 A small desktop download manager (IDM-style) for videos and images from YouTube, Facebook, LinkedIn, X and Instagram. Paste or drop a link, pick what to download, and LinkGrab fetches it with open-source engines: [yt-dlp](https://github.com/yt-dlp/yt-dlp) for videos, [ffmpeg](https://ffmpeg.org) for merging and audio, and [gallery-dl](https://github.com/mikf/gallery-dl) for images and mixed posts. Windows 10/11 x64 is the target; the app also runs from source on Linux.
 
 ![LinkGrab main window](docs/screenshots/main-window.png)
@@ -38,6 +40,36 @@ Any other host is rejected with a clear error.
 - Status filters (All / Downloading / Completed / Failed), media filters (Images / Videos), progress, speed and ETA per item
 - Drag and drop links, clipboard-link suggestion, dark theme, works offline apart from downloading
 - Queue is saved between runs
+
+## LinkGrab vs Internet Download Manager (IDM)
+
+| | LinkGrab | IDM |
+|---|---|---|
+| Price | Free, open source (MIT) | Paid, with a trial |
+| Social video and image links | YouTube, Facebook, LinkedIn, X, Instagram | Video grabbing from many sites through browser integration |
+| Browser integration | No: paste or drag a link | Yes |
+| Accelerates any file download | No | Yes |
+| Queue, pause, resume | Yes | Yes |
+| Platforms | Windows installer; macOS and Linux from source | Windows |
+
+LinkGrab covers the "download this video or image from a link" part of IDM. It does not replace IDM's browser integration or its acceleration of ordinary file downloads. LinkGrab is an independent project, not affiliated with or endorsed by Internet Download Manager, YouTube, Facebook, LinkedIn, X or Instagram.
+
+## Platforms
+
+- **Windows 10/11 x64:** installer and portable `.exe` (see below). This is the supported build.
+- **macOS and Linux (experimental):** run from source with Node.js 20+ (`npm install`, `npm start`). On macOS, install the extra engines yourself: `brew install ffmpeg gallery-dl`. There is no packaged Mac app yet.
+
+## Common questions
+
+**How do I download an Instagram reel or carousel on Windows?** Paste the post link into LinkGrab, choose *Everything* or *Images only*, and sign in through Settings > Use browser cookies (Instagram nearly always needs it).
+
+**How do I download a video from X (Twitter)?** Paste the post link; LinkGrab shows the video qualities, or the images if the post has photos.
+
+**Can I download a YouTube video in 1080p or as audio only?** Yes, pick the quality in the Add dialog (audio only gives an audio file). Higher qualities need ffmpeg, which the first-run engine install adds.
+
+**Can I download Facebook or LinkedIn videos?** Public posts, yes. Private or login-only posts need Settings > Use browser cookies.
+
+**Does it work on Mac?** Not as a packaged app yet; see Platforms above.
 
 ## Get the .exe
 
@@ -109,7 +141,7 @@ Files go to `Downloads\LinkGrab` by default; change this in Settings.
 
 ## Legal note
 
-Only download content you own or have permission to download, and respect the terms of service of each site and applicable copyright law. You are responsible for how you use this tool.
+LinkGrab is not affiliated with or endorsed by any of the sites it supports or by Internet Download Manager. Only download content you own or have permission to download, and respect the terms of service of each site and applicable copyright law. You are responsible for how you use this tool.
 
 ## Test checklist (verify on your machine)
 

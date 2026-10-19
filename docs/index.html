@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkGrab: free IDM-style video and image downloader for Windows</title>
+<meta name="description" content="LinkGrab is a free, open-source download manager for Windows. Paste a link and download videos and images from YouTube, Facebook, LinkedIn, X (Twitter) and Instagram, with a queue, pause and resume.">
+<meta name="keywords" content="IDM alternative, Internet Download Manager alternative, free video downloader for Windows, YouTube downloader, Instagram reel downloader, Instagram photo and carousel downloader, X Twitter video downloader, Facebook video downloader, LinkedIn video downloader, yt-dlp GUI, gallery-dl GUI, open source download manager">
+<link rel="canonical" href="https://kamleshwarmaurya.github.io/linkgrab/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LinkGrab: free IDM-style video and image downloader for Windows">
+<meta property="og:description" content="Paste a link, pick the quality, download. YouTube, Facebook, LinkedIn, X and Instagram videos and images. Free and open source.">
+<meta property="og:url" content="https://kamleshwarmaurya.github.io/linkgrab/">
+<meta property="og:image" content="https://kamleshwarmaurya.github.io/linkgrab/social-preview.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LinkGrab: free IDM-style video and image downloader for Windows">
+<meta name="twitter:description" content="Download videos and images from YouTube, Facebook, LinkedIn, X and Instagram with a simple queue-based desktop app.">
+<meta name="twitter:image" content="https://kamleshwarmaurya.github.io/linkgrab/social-preview.png">
+<meta name="color-scheme" content="dark light">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "LinkGrab",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Windows 10, Windows 11",
+      "description": "Free, open-source download manager for videos and images from YouTube, Facebook, LinkedIn, X (Twitter) and Instagram, with a download queue, pause and resume.",
+      "url": "https://kamleshwarmaurya.github.io/linkgrab/",
+      "downloadUrl": "https://github.com/Kamleshwarmaurya/linkgrab/releases",
+      "codeRepository": "https://github.com/Kamleshwarmaurya/linkgrab",
+      "license": "https://opensource.org/licenses/MIT",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "author": { "@type": "Person", "name": "Kamleshwar" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is LinkGrab an alternative to Internet Download Manager (IDM)?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It covers one part of what IDM does: a queue-based desktop downloader with progress, pause and resume for videos and images from YouTube, Facebook, LinkedIn, X and Instagram. It does not integrate with your browser and does not accelerate arbitrary file downloads." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does LinkGrab work on Mac?",
+          "acceptedAnswer": { "@type": "Answer", "text": "There is no packaged Mac app yet. The Windows installer and portable app are the supported builds. On macOS and Linux you can run LinkGrab from source with Node.js (experimental); on a Mac, install ffmpeg and gallery-dl with Homebrew." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is LinkGrab free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. LinkGrab is free and open source under the MIT license." }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Instagram ask me to sign in?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Instagram nearly always requires a logged-in session. In LinkGrab Settings, choose the browser where you are signed in under Use browser cookies. The cookies stay on your PC and are only passed to the local download engines." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it legal to download these videos and images?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Only download content you own or have permission to download, and respect each site's terms of service and copyright law." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#14161a;--panel:#1e2229;--line:#2f3541;--text:#eceff4;--muted:#98a2b3;--accent:#3b82f6;--accent-text:#fff}
+@media (prefers-color-scheme:light){:root{--bg:#f7f8fa;--panel:#fff;--line:#dfe3ea;--text:#171a21;--muted:#566070;--accent:#2563eb}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+header.hero{padding:56px 0 32px}
+h1{font-size:clamp(28px,5vw,44px);line-height:1.15;margin:0 0 12px}
+h2{font-size:24px;margin:48px 0 12px}
+h3{font-size:18px;margin:0 0 6px}
+.lead{color:var(--muted);font-size:18px;max-width:720px;margin:0 0 24px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px}
+.btn{display:inline-block;padding:12px 20px;border-radius:10px;border:1px solid var(--line);text-decoration:none;font-weight:600;color:var(--text);background:var(--panel)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+.btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.note{color:var(--muted);font-size:14px}
+.shots img{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:15px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto}
+details{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--muted);margin:8px 0 0}
+footer{margin:56px 0 32px;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <h1>LinkGrab: free IDM-style video and image downloader for Windows</h1>
+    <p class="lead">Paste a link, pick the quality, download. LinkGrab is a free, open-source download manager for videos and images from YouTube, Facebook, LinkedIn, X (Twitter) and Instagram, with a queue, pause and resume.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/Kamleshwarmaurya/linkgrab/releases">Get the Windows installer</a>
+      <a class="btn" href="https://github.com/Kamleshwarmaurya/linkgrab">View source on GitHub</a>
+    </div>
+    <p class="note">Windows 10/11 x64: installer or portable app. macOS and Linux: run from source (experimental). The app is unsigned, so Windows SmartScreen may ask you to choose "More info", then "Run anyway".</p>
+  </header>
+
+  <section class="shots" aria-label="Screenshots">
+    <img src="screenshots/main-window.png" alt="LinkGrab download list with progress bars for YouTube, Facebook, LinkedIn, X and Instagram items" width="1400" height="800">
+    <img src="screenshots/add-download.png" alt="Add download dialog showing an Instagram carousel preview and quality choices" width="1100" height="700">
+    <p class="note">Interface preview with demo data.</p>
+  </section>
+
+  <section>
+    <h2>Download from the sites you use</h2>
+    <div class="grid">
+      <div class="card"><h3>YouTube downloader</h3><p>Videos at best, 1080p, 720p, 480p or 360p, or audio only.</p></div>
+      <div class="card"><h3>Facebook video downloader</h3><p>Public videos and reels; private ones with your browser login.</p></div>
+      <div class="card"><h3>LinkedIn video downloader</h3><p>Post and feed videos you can view.</p></div>
+      <div class="card"><h3>X (Twitter) video and image downloader</h3><p>Videos, photos and mixed posts in original quality.</p></div>
+      <div class="card"><h3>Instagram downloader</h3><p>Reels, photos and carousels, saved as numbered files in a folder.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Features</h2>
+    <ul>
+      <li>Download queue with pause, resume, cancel and remove; partial downloads continue where they stopped</li>
+      <li>Videos and images, including multi-image carousels, as separate files</li>
+      <li>Quality picker, parallel downloads and an optional speed limit</li>
+      <li>Drag and drop links, clipboard-link suggestion, dark theme</li>
+      <li>Open source (MIT), powered by yt-dlp, gallery-dl and ffmpeg</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>LinkGrab vs Internet Download Manager (IDM)</h2>
+    <div class="tablewrap">
+    <table>
+      <thead><tr><th></th><th>LinkGrab</th><th>IDM</th></tr></thead>
+      <tbody>
+        <tr><th>Price</th><td>Free, open source</td><td>Paid, with a trial</td></tr>
+        <tr><th>Social video and image links</th><td>YouTube, Facebook, LinkedIn, X, Instagram</td><td>Video grabbing from many sites through its browser integration</td></tr>
+        <tr><th>Browser integration</th><td>No. You paste or drag a link</td><td>Yes</td></tr>
+        <tr><th>Accelerates any file download</th><td>No</td><td>Yes</td></tr>
+        <tr><th>Queue, pause, resume</th><td>Yes</td><td>Yes</td></tr>
+        <tr><th>Platforms</th><td>Windows installer; macOS and Linux from source</td><td>Windows</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note">LinkGrab is an independent project and is not affiliated with or endorsed by Internet Download Manager or its makers.</p>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <ol>
+      <li>Install LinkGrab and click <strong>Install engine</strong> on first run (it fetches yt-dlp, ffmpeg and gallery-dl).</li>
+      <li>Paste a link. LinkGrab shows the title, thumbnails and quality options.</li>
+      <li>Click Add. Watch progress, pause or resume, then open the file or its folder.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Frequently asked questions</h2>
+    <details><summary>Is LinkGrab an alternative to Internet Download Manager (IDM)?</summary><p>It covers one part of what IDM does: a queue-based desktop downloader with progress, pause and resume for videos and images from YouTube, Facebook, LinkedIn, X and Instagram. It does not integrate with your browser and does not accelerate arbitrary file downloads.</p></details>
+    <details><summary>Does LinkGrab work on Mac?</summary><p>There is no packaged Mac app yet. The Windows installer and portable app are the supported builds. On macOS and Linux you can run LinkGrab from source with Node.js (experimental); on a Mac, install ffmpeg and gallery-dl with Homebrew.</p></details>
+    <details><summary>Is LinkGrab free?</summary><p>Yes. It is free and open source under the MIT license.</p></details>
+    <details><summary>Why does Instagram ask me to sign in?</summary><p>Instagram nearly always requires a logged-in session. In Settings, choose the browser where you are signed in under "Use browser cookies". The cookies stay on your PC and are only passed to the local download engines.</p></details>
+    <details><summary>Is it legal to download these videos and images?</summary><p>Only download content you own or have permission to download, and respect each site's terms of service and copyright law.</p></details>
+  </section>
+
+  <footer>
+    <p>LinkGrab is open source (MIT). Source, issues and releases: <a href="https://github.com/Kamleshwarmaurya/linkgrab">github.com/Kamleshwarmaurya/linkgrab</a>. YouTube, Facebook, LinkedIn, X and Instagram are trademarks of their owners; LinkGrab is not affiliated with them. Only download content you have the right to save.</p>
+  </footer>
+</div>
+</body>
+</html>
