@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https: data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LinkGrab</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app">
+
+  <section id="banner" class="banner" role="region" aria-label="Engine setup" hidden>
+    <span class="banner-ic" data-ic="download"></span>
+    <div class="banner-body">
+      <strong id="bannerTitle">Download engine required</strong>
+      <span id="bannerText">LinkGrab needs yt-dlp, ffmpeg and gallery-dl to fetch videos and images. It is a one-time download.</span>
+      <div id="bannerProgress" class="banner-progress" hidden>
+        <div class="bar" role="progressbar" aria-label="Engine install progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="bannerBar"></i></div>
+        <span id="bannerMsg" class="banner-msg"></span>
+      </div>
+    </div>
+    <button id="btnInstall" class="btn primary" type="button"><span data-ic="download"></span><span id="btnInstallLabel">Install</span></button>
+    <button id="bannerClose" class="icon-btn" type="button" aria-label="Dismiss image engine notice" hidden><span data-ic="x"></span></button>
+  </section>
+
+  <header class="toolbar" role="toolbar" aria-label="Download actions">
+    <button id="tbAdd" class="tb primary" type="button" title="Add URL (Ctrl+N)"><span data-ic="plus"></span><span>Add URL</span></button>
+    <span class="tb-sep" aria-hidden="true"></span>
+    <button id="tbPause" class="tb" type="button" title="Pause (Space)" disabled><span data-ic="pause"></span><span>Pause</span></button>
+    <button id="tbResume" class="tb" type="button" title="Resume (Space)" disabled><span data-ic="play"></span><span>Resume</span></button>
+    <button id="tbCancel" class="tb" type="button" title="Cancel download" disabled><span data-ic="stop"></span><span>Cancel</span></button>
+    <button id="tbRemove" class="tb" type="button" title="Remove from list (Delete)" disabled><span data-ic="trash"></span><span>Remove</span></button>
+    <span class="tb-sep" aria-hidden="true"></span>
+    <button id="tbFolder" class="tb" type="button" title="Show in folder" disabled><span data-ic="folder"></span><span>Open folder</span></button>
+    <span class="tb-spacer"></span>
+    <button id="tbSettings" class="tb" type="button" title="Settings (Ctrl+,)"><span data-ic="sliders"></span><span>Settings</span></button>
+  </header>
+
+  <div id="clipBar" class="clipbar" role="region" aria-label="Clipboard suggestion" hidden>
+    <span class="clip-ic" data-ic="clipboard"></span>
+    <span class="clip-label">Link in clipboard</span>
+    <span id="clipUrl" class="clip-url"></span>
+    <button id="clipAdd" class="btn small primary" type="button">Add this link</button>
+    <button id="clipClose" class="icon-btn" type="button" aria-label="Dismiss clipboard suggestion"><span data-ic="x"></span></button>
+  </div>
+
+  <div class="main">
+    <nav class="sidebar" aria-label="Status filters">
+      <div class="side-title">Status</div>
+      <button class="filter active" type="button" data-filter="all" aria-pressed="true"><span data-ic="list"></span><span class="f-label">All</span><span class="count" id="cntAll">0</span></button>
+      <button class="filter" type="button" data-filter="active" aria-pressed="false"><span data-ic="download"></span><span class="f-label">Downloading</span><span class="count" id="cntActive">0</span></button>
+      <button class="filter" type="button" data-filter="completed" aria-pressed="false"><span data-ic="check"></span><span class="f-label">Completed</span><span class="count" id="cntCompleted">0</span></button>
+      <button class="filter" type="button" data-filter="failed" aria-pressed="false"><span data-ic="alert"></span><span class="f-label">Failed</span><span class="count" id="cntFailed">0</span></button>
+
+      <div class="side-title side-title-2">Media</div>
+      <button class="filter" type="button" data-filter="images" aria-pressed="false" title="Posts with images"><span data-ic="image"></span><span class="f-label">Images</span><span class="count" id="cntImages">0</span></button>
+      <button class="filter" type="button" data-filter="videos" aria-pressed="false" title="Posts with video"><span data-ic="film"></span><span class="f-label">Videos</span><span class="count" id="cntVideos">0</span></button>
+
+      <div class="side-spacer"></div>
+      <div class="engine-panel" aria-label="Download engine">
+        <div class="side-title">Engine</div>
+        <div class="eng-row"><span class="eng-name">yt-dlp</span><span id="engYtdlp" class="eng-val">...</span></div>
+        <div class="eng-row"><span class="eng-name">ffmpeg</span><span id="engFfmpeg" class="eng-val">...</span></div>
+        <div class="eng-row"><span class="eng-name">gallery-dl</span><span id="engGallerydl" class="eng-val">...</span></div>
+        <button id="btnUpdate" class="btn small block" type="button"><span data-ic="refresh"></span><span id="btnUpdateLabel">Update engine</span></button>
+        <div id="engMsg" class="eng-msg" hidden></div>
+      </div>
+    </nav>
+
+    <main class="content">
+      <div id="tableWrap" class="table-wrap">
+        <table id="grid" role="grid" aria-label="Downloads" aria-multiselectable="true" tabindex="0">
+          <thead>
+            <tr>
+              <th class="c-title" scope="col">Title</th>
+              <th class="c-site" scope="col">Site</th>
+              <th class="c-size num" scope="col">Size</th>
+              <th class="c-prog" scope="col">Progress</th>
+              <th class="c-speed num" scope="col">Speed</th>
+              <th class="c-eta num" scope="col">ETA</th>
+              <th class="c-status" scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="empty" class="empty" hidden>
+          <div class="empty-art" data-ic="download"></div>
+          <h2 id="emptyTitle">No downloads yet</h2>
+          <div id="emptyBody">
+            <p>Click <strong>Add URL</strong> or press <kbd>Ctrl</kbd> + <kbd>N</kbd>, then paste a link.</p>
+            <p>You can also paste several links at once, one per line, or drag a link onto this window.</p>
+            <p class="muted">Supports YouTube, Facebook, LinkedIn, X and Instagram: videos, photos and carousels.</p>
+          </div>
+          <button id="emptyAdd" class="btn primary" type="button"><span data-ic="plus"></span><span>Add URL</span></button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <span class="foot-note">Download only content you have the right to save.</span>
+    <span id="footStats" class="foot-stats">0 downloads</span>
+  </footer>
+</div>
+
+<!-- Add URL modal -->
+<div id="addModal" class="backdrop" hidden>
+  <div class="modal wide" role="dialog" aria-modal="true" aria-labelledby="addTitle">
+    <div class="modal-head">
+      <h2 id="addTitle">Add download</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Close"><span data-ic="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <div class="label-row">
+          <label for="addUrls">Link(s)</label>
+          <button id="addPaste" class="link-btn" type="button"><span data-ic="clipboard"></span>Paste from clipboard</button>
+        </div>
+        <textarea id="addUrls" rows="3" spellcheck="false" autocomplete="off" placeholder="Paste a YouTube, Facebook, LinkedIn, X or Instagram link. For several links, put one per line."></textarea>
+        <div id="addHint" class="hint" aria-live="polite"></div>
+        <div id="addHelp" class="hint">Works with videos, photos and carousels from YouTube, Facebook, LinkedIn, X and Instagram. Instagram and some X posts need Settings &gt; Use browser cookies.</div>
+      </div>
+
+      <div id="addPreview" class="preview" hidden aria-live="polite"></div>
+      <ul id="addList" class="link-list" hidden></ul>
+
+      <fieldset class="field quality">
+        <legend>Quality</legend>
+        <div id="qualityGroup" class="seg" role="radiogroup" aria-label="Quality"></div>
+      </fieldset>
+
+      <div id="addError" class="alert" role="alert" hidden></div>
+    </div>
+    <div class="modal-foot">
+      <span class="foot-hint">Ctrl + Enter to add</span>
+      <span class="grow"></span>
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button id="addGo" class="btn primary" type="button" disabled>Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div id="settingsModal" class="backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+    <div class="modal-head">
+      <h2 id="setTitle">Settings</h2>
+      <button class="icon-btn" type="button" data-close aria-label="Close"><span data-ic="x"></span></button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label for="setDir">Download folder</label>
+        <div class="input-row">
+          <input id="setDir" type="text" spellcheck="false" autocomplete="off">
+          <button id="setBrowse" class="btn" type="button"><span data-ic="folder"></span>Browse...</button>
+        </div>
+      </div>
+      <div class="field two">
+        <div>
+          <label for="setMax">Max concurrent downloads</label>
+          <input id="setMax" type="number" min="1" max="10" step="1">
+        </div>
+        <div>
+          <label for="setLimit">Speed limit</label>
+          <input id="setLimit" type="text" spellcheck="false" autocomplete="off" placeholder="Unlimited (e.g. 2M or 500K)">
+        </div>
+      </div>
+      <div class="field">
+        <label for="setCookies">Use browser cookies</label>
+        <select id="setCookies">
+          <option value="">None</option>
+          <option value="chrome">Chrome</option>
+          <option value="edge">Edge</option>
+          <option value="firefox">Firefox</option>
+          <option value="brave">Brave</option>
+        </select>
+        <div class="hint">Needed for private or login-only posts. Instagram almost always needs it, and so do many posts on X, Facebook and LinkedIn. Pick the browser where you are signed in.</div>
+      </div>
+      <div id="setError" class="alert" role="alert" hidden></div>
+    </div>
+    <div class="modal-foot">
+      <span class="grow"></span>
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button id="setSave" class="btn primary" type="button">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm modal -->
+<div id="confirmModal" class="backdrop" hidden>
+  <div class="modal narrow" role="alertdialog" aria-modal="true" aria-labelledby="cfTitle" aria-describedby="cfText">
+    <div class="modal-head"><h2 id="cfTitle">Confirm</h2></div>
+    <div class="modal-body"><p id="cfText"></p></div>
+    <div class="modal-foot">
+      <span class="grow"></span>
+      <button class="btn" type="button" data-close>Cancel</button>
+      <button id="cfOk" class="btn danger" type="button">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div id="ctxMenu" class="ctx" role="menu" aria-label="Download actions" hidden></div>
+<div id="dropOverlay" class="drop" aria-hidden="true" hidden><div class="drop-box"><span data-ic="link"></span><strong>Drop link to add</strong><span>YouTube, Facebook, LinkedIn, X or Instagram</span></div></div>
+<div id="toasts" class="toasts" aria-live="polite" aria-relevant="additions text"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
