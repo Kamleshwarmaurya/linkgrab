@@ -83,14 +83,10 @@ LinkGrab covers the "download this video or image from a link" part of IDM. It d
 
 The first build downloads Electron and NSIS, so it needs internet and can take a few minutes.
 
-### Option B: GitHub Actions (builds on GitHub's Windows runner)
+### Option B: GitHub Actions (builds on GitHub's Windows runner and publishes the .exe)
 
-1. Open the repository's **Actions** tab, pick "Build Windows" and click **Run workflow**, or push a version tag:
-   ```
-   git tag v1.1.0
-   git push origin v1.1.0
-   ```
-2. Download the `LinkGrab-windows` artifact from the finished run. For tag pushes the `.exe` files are also attached to a GitHub Release (see the **Releases** page).
+1. Open the repository's **Actions** tab, choose **Build Windows**, click **Run workflow**, keep the tag (for example `v1.1.0`) and **publish** switched on, and run it. Or push a version tag: `git tag v1.1.0 && git push origin v1.1.0`.
+2. After a few minutes the **Releases** page has the installer, the portable exe and `SHA256SUMS.txt`. The same files are also kept as the `LinkGrab-windows` artifact of the run.
 
 ## Run from source
 
