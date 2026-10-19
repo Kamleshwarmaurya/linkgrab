@@ -10,6 +10,24 @@ permissions:
   contents: write
 
 jobs:
+  # Tests use Unix shell scripts and symlinks, so they run on Linux.
+  # They report status but do not block the Windows build or the release.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install engines used by the integration tests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          pip install yt-dlp gallery-dl pillow imageio-ffmpeg
+      - run: npm ci
+      - run: npm test
+
   build:
     runs-on: windows-latest
     steps:
@@ -25,22 +43,58 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Test
-        run: npm test
-
       - name: Build installer and portable exe
         run: npm run dist
+
+      - name: Create SHA-256 checksums
+        shell: pwsh
+        run: |
+          Get-ChildItem dist\*.exe | ForEach-Object {
+            $h = (Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower()
+            "$h  $($_.Name)"
+          } | Set-Content -Encoding ascii dist\SHA256SUMS.txt
+          Get-Content dist\SHA256SUMS.txt
+
+      - name: Write release notes
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: pwsh
+        run: |
+          $notes = @'
+          ## LinkGrab
+
+          Free, open-source IDM-style download manager for **Windows 10/11 (x64)**. Paste a link and download videos and images from YouTube, Facebook, LinkedIn, X (Twitter) and Instagram.
+
+          ### Download
+          - **LinkGrab-Setup-*.exe**: installer (Start menu and desktop shortcut)
+          - **LinkGrab-Portable-*.exe**: no install, just run it
+          - **SHA256SUMS.txt**: checksums to verify your download
+
+          ### First run
+          1. Windows SmartScreen may warn because the app is **unsigned**: click **More info**, then **Run anyway**.
+          2. Click **Install engine** once. It downloads yt-dlp, ffmpeg and gallery-dl (needs internet).
+          3. Paste a link and download. Instagram (and some X, Facebook and LinkedIn posts) need Settings > Use browser cookies with a browser you are signed in to.
+
+          See the [changelog](https://github.com/Kamleshwarmaurya/linkgrab/blob/main/CHANGELOG.md) for what's new.
+
+          Only download content you own or have permission to download. LinkGrab is not affiliated with any of the supported sites or with Internet Download Manager.
+          '@
+          $notes -replace '(?m)^ {10}', '' | Set-Content -Encoding utf8 release-notes.md
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: LinkGrab-windows
-          path: dist/*.exe
+          path: |
+            dist/*.exe
+            dist/SHA256SUMS.txt
           if-no-files-found: error
 
       - name: Attach to GitHub release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.exe
-          generate_release_notes: true
+          files: |
+            dist/*.exe
+            dist/SHA256SUMS.txt
+          body_path: release-notes.md
+          name: LinkGrab ${{ github.ref_name }}
