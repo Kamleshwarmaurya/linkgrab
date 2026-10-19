@@ -1,5 +1,5 @@
 'use strict';
-// Exposes the LinkGrab bridge as window.api. Channel names follow IPC_CHANNELS.md.
+// Exposes the LinkGrab bridge as window.api. Channel names follow docs/IPC_CHANNELS.md.
 const { contextBridge, ipcRenderer } = require('electron');
 
 const invoke = (channel) => (...args) => ipcRenderer.invoke(channel, ...args);

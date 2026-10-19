@@ -1,7 +1,7 @@
 # LinkGrab IPC channels (owned by CORE)
 
 Request/response: preload uses `ipcRenderer.invoke(channel, ...args)`; main registers with `ipcMain.handle`.
-Return values are exactly as in CONTRACT.md (every handler resolves, never rejects; failures are `{ ok:false, error }`).
+Return values are exactly as in design/CONTRACT-v1.0.md (every handler resolves, never rejects; failures are `{ ok:false, error }`).
 
 | window.api method        | channel                  | args                       | resolves with                          |
 |--------------------------|--------------------------|----------------------------|----------------------------------------|

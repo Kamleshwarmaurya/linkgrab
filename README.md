@@ -2,6 +2,12 @@
 
 A small desktop download manager (IDM-style) for videos and images from YouTube, Facebook, LinkedIn, X and Instagram. Paste or drop a link, pick what to download, and LinkGrab fetches it with open-source engines: [yt-dlp](https://github.com/yt-dlp/yt-dlp) for videos, [ffmpeg](https://ffmpeg.org) for merging and audio, and [gallery-dl](https://github.com/mikf/gallery-dl) for images and mixed posts. Windows 10/11 x64 is the target; the app also runs from source on Linux.
 
+![LinkGrab main window](docs/screenshots/main-window.png)
+
+![Add download dialog with an Instagram carousel preview](docs/screenshots/add-download.png)
+
+*Interface preview with demo data (not real downloads).*
+
 ## Supported sites
 
 - YouTube: youtube.com, youtu.be, m.youtube.com, music.youtube.com
@@ -45,11 +51,14 @@ Any other host is rejected with a clear error.
 
 The first build downloads Electron and NSIS, so it needs internet and can take a few minutes.
 
-### Option B: GitHub Actions
+### Option B: GitHub Actions (builds on GitHub's Windows runner)
 
-1. Push this project to a GitHub repository (commit `package-lock.json` too).
-2. Either open the Actions tab, pick "Build Windows" and click "Run workflow", or push a tag such as `v1.1.0`.
-3. Download the `LinkGrab-windows` artifact from the finished run. For tag pushes the `.exe` files are also attached to a GitHub Release.
+1. Open the repository's **Actions** tab, pick "Build Windows" and click **Run workflow**, or push a version tag:
+   ```
+   git tag v1.1.0
+   git push origin v1.1.0
+   ```
+2. Download the `LinkGrab-windows` artifact from the finished run. For tag pushes the `.exe` files are also attached to a GitHub Release (see the **Releases** page).
 
 ## Run from source
 
@@ -123,6 +132,25 @@ X and Instagram (v1.1)
 - [ ] Instagram link with cookies disabled shows the "enable browser cookies" hint; with cookies enabled it works
 - [ ] Remove with "delete file" on a carousel removes all files and the empty subfolder
 - [ ] Open file and Show in folder work for a multi-file item
+
+## Known limitations
+
+- The Windows builds are unsigned, so SmartScreen warns on first run.
+- Downloads depend on yt-dlp and gallery-dl keeping up with the sites. YouTube is the most reliable; Facebook, LinkedIn, X and Instagram change often and may need a logged-in browser (Settings > Use browser cookies) or an engine update.
+- gallery-dl's stable releases no longer include a Windows binary, so the installer uses the gallery-dl project's own daily builds. See [SECURITY.md](SECURITY.md) for how to use a pinned copy instead.
+- The test suite runs against local servers and the real engines, never against the social sites themselves. Real-site behavior is covered by the manual checklist above.
+- Windows 10/11 x64 only for the installer. Running from source works on Linux and macOS, but macOS has no automatic ffmpeg install.
+
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md): modules, the life of a download, security decisions
+- [IPC channels and data shapes](docs/IPC_CHANNELS.md)
+- [Design contracts](docs/design/) (v1.0 and the v1.1 extension)
+- [Changelog](CHANGELOG.md), [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md)
+
+## License
+
+[MIT](LICENSE). yt-dlp, ffmpeg and gallery-dl are separate projects with their own licenses; LinkGrab downloads them at first run and does not redistribute them.
 
 ## Rebuilding the icon
 

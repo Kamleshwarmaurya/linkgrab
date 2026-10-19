@@ -69,5 +69,21 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Kamleshwarmaurya/linkgrab.git"
-  }
+  },
+  "homepage": "https://github.com/Kamleshwarmaurya/linkgrab#readme",
+  "bugs": {
+    "url": "https://github.com/Kamleshwarmaurya/linkgrab/issues"
+  },
+  "keywords": [
+    "download-manager",
+    "yt-dlp",
+    "gallery-dl",
+    "electron",
+    "youtube",
+    "instagram",
+    "twitter",
+    "x",
+    "facebook",
+    "linkedin"
+  ]
 }

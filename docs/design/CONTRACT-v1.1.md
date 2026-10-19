@@ -1,6 +1,6 @@
 # LinkGrab v1.1 - extension contract: X (Twitter) + Instagram, videos AND images
 
-Builds on CONTRACT.md (v1.0, still valid). The existing code in /home/claude/linkgrab is working (71 passing tests). Do not rewrite it; extend it. Run `cd /home/claude/linkgrab && node --test` before and after your changes.
+Builds on CONTRACT-v1.0.md (v1.0, still valid). The existing code in /home/claude/linkgrab is working (71 passing tests). Do not rewrite it; extend it. Run `cd /home/claude/linkgrab && node --test` before and after your changes.
 
 ## Product change
 - New supported sites: **X** (x.com, twitter.com, mobile.twitter.com, www./mobile. subdomains) and **Instagram** (instagram.com, instagr.am, www.). Post/status URLs, reels, `/p/`, `/reel/`, `/tv/`, X `/<user>/status/<id>`. Keep YouTube/Facebook/LinkedIn exactly as they are.
